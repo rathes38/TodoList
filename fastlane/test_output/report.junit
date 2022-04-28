@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='TodoListUITests.xctest' tests='5' failures='0'>
+  <testsuite name='TodoListUITests.TodoListUITests' tests='1' failures='0'>
+    <testcase classname='TodoListUITests.TodoListUITests' name='testExample' time='3.705'/>
+  </testsuite>
+  <testsuite name='TodoListUITests.TodoListUITestsLaunchTests' tests='4' failures='0'>
+    <testcase classname='TodoListUITests.TodoListUITestsLaunchTests' name='testLaunch' time='3.063'/>
+    <testcase classname='TodoListUITests.TodoListUITestsLaunchTests' name='testLaunch' time='3.108'/>
+    <testcase classname='TodoListUITests.TodoListUITestsLaunchTests' name='testLaunch' time='3.073'/>
+    <testcase classname='TodoListUITests.TodoListUITestsLaunchTests' name='testLaunch' time='3.113'/>
+  </testsuite>
+</testsuites>

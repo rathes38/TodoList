@@ -1,0 +1,13 @@
+# XCode user data
+**/*xcuserdata
+*.bkup
+
+# Dependencies
+.DS_Store
+*/.DS_Store
+
+/Build
+/TodoList.xcodeproj/xcshareddata/
+
+/fastlane/test_output/
+/fastlane/report.xml
