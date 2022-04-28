@@ -25,7 +25,7 @@ lane :build do
     configuration: "Debug",
     scheme: "TodoList",
     silent: true,
-    clean: false,
+    clean: true,
     export_method: "development",
     output_directory: "Build", # Destination directory. Defaults to current directory.
     output_name: "my-app.ipa",       # specify the name of the .ipa file to generate (including file extension)
