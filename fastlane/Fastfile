@@ -12,7 +12,7 @@ platform :ios do
 
 lane :build do
 
- run_tests(scheme: "TodoListTests")
+ run_test_cases
 
  set_build_number
 
@@ -24,7 +24,11 @@ lane :build do
   
 end
 
-
+lane :run_test_cases do
+  run_tests(project: "TodoList.xcodeproj",
+            devices: ["iPhone 13 Pro"],
+            scheme: "TodoListTests")
+end
 
 lane :set_build_number do 
 

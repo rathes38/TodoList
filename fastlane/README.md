@@ -42,6 +42,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Description of what the lane does
 
+### ios run_test_cases
+
+```sh
+[bundle exec] fastlane ios run_test_cases
+```
+
+
+
 ### ios set_build_number
 
 ```sh
