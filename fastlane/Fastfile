@@ -1,17 +1,9 @@
 # This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
 
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+commits_to_this_commit = ''
+commits_from_that_commit = ''
+notes = ''
+release_number = ''
 
 default_platform(:ios)
 
@@ -19,6 +11,55 @@ platform :ios do
   desc "Description of what the lane does"
 
 lane :build do
+
+ run_tests(scheme: "TodoListTests")
+
+ set_build_number
+
+ prepare_build
+
+ get_changelog
+
+ upload_build
+  
+end
+
+
+
+lane :set_build_number do 
+
+  appcenter_version = appcenter_fetch_version_number(
+    api_token: "b984214da7624272c75a7e5832509ce2550115a3",
+    owner_name: "yanoratheesh-gmail.com",
+    app_name: "TodoList"
+  )
+  release_number = appcenter_version['build_number']
+  increment_build_number(
+    build_number: release_number
+  )
+  release_number = increment_build_number
+
+end
+
+lane :get_changelog do
+     
+      commits_to_this_commit = ENV.fetch('GIT_COMMIT') do
+               `git rev-parse --verify HEAD`.strip
+        end
+        commits_from_that_commit = ENV.fetch('GIT_PREVIOUS_SUCCESSFUL_COMMIT') do
+                `git rev-parse --verify #{commits_to_this_commit}~6`.strip
+        end 
+      notes = changelog_from_git_commits(
+      between: [commits_from_that_commit, commits_to_this_commit],
+      pretty: "%s",
+      merge_commit_filtering: "exclude_merges"
+      ) 
+      puts notes
+  end
+end
+
+
+lane :prepare_build do
 
   build_app(
    project: "TodoList.xcodeproj",
@@ -31,17 +72,17 @@ lane :build do
     output_name: "my-app.ipa",       # specify the name of the .ipa file to generate (including file extension)
     #sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
   )
+end
 
- # appcenter_upload(
- #  api_token: "b984214da7624272c75a7e5832509ce2550115a3",
- #   owner_name: "yanoratheesh-gmail.com",
- #   owner_type: "user", # Default is user - set to organization for appcenter organizations
- #   app_name: "TodoList",
+lane :upload_build do 
+
+  appcenter_upload(
+   api_token: "b984214da7624272c75a7e5832509ce2550115a3",
+   owner_name: "yanoratheesh-gmail.com",
+   owner_type: "user", # Default is user - set to organization for appcenter organizations
+   app_name: "TodoList",
+   release_notes: notes,
     #file: "/Users/ratheesh/Desktop/Ratheesh/SwiftUI/TodoList/path/to/dir",
- #   notify_testers: true # Set to false if you don't want to notify testers of your new release (default: `false`)
- # )
+   notify_testers: true # Set to false if you don't want to notify testers of your new release (default: `false`)
+  )
 end
-
-end
-
-
