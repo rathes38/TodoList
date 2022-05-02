@@ -47,18 +47,35 @@ end
 
 lane :get_changelog do
      
-      commits_to_this_commit = ENV.fetch('GIT_COMMIT') do
-               `git rev-parse --verify HEAD`.strip
-        end
-        commits_from_that_commit = ENV.fetch('GIT_PREVIOUS_SUCCESSFUL_COMMIT') do
-                `git rev-parse --verify #{commits_to_this_commit}~6`.strip
-        end 
-      notes = changelog_from_git_commits(
-      between: [commits_from_that_commit, commits_to_this_commit],
-      pretty: "%s",
-      merge_commit_filtering: "exclude_merges"
-      ) 
-      puts notes
+  commit_id_path = File.expand_path('../last_commit_id.txt', __FILE__)
+  File.open(commit_id_path, "r") do |f|
+    f.each_line do |line|
+      commits_from_that_commit = line
+    end
+  end
+
+  commits_to_this_commit = ENV.fetch('GIT_COMMIT') do
+    `git rev-parse --verify HEAD`.strip
+  end
+
+  if commits_from_that_commit.length == 0 
+    commits_from_that_commit = ENV.fetch('GIT_PREVIOUS_SUCCESSFUL_COMMIT') do
+      `git rev-parse --verify #{commits_to_this_commit}~6`.strip
+    end 
+  end
+
+  notes = changelog_from_git_commits(
+  between: [commits_from_that_commit, commits_to_this_commit],
+    pretty: "%s",
+    merge_commit_filtering: "exclude_merges"
+  ) 
+  if notes.length == 0 
+    notes = 'There is no changes available in this build. Previous build also upto date!!'
+  end
+
+  commit = last_git_commit[:commit_hash]
+  File.write(commit_id_path, commit)
+  puts 'Release notes: '+notes
   end
 end
 
