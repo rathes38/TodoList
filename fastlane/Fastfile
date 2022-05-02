@@ -12,15 +12,15 @@ platform :ios do
 
 lane :build do
 
- run_test_cases
+ #run_test_cases
 
- set_build_number
+ #set_build_number
 
- prepare_build
+ #prepare_build
 
  get_changelog
 
- upload_build
+ #upload_build
   
 end
 
@@ -103,7 +103,6 @@ lane :upload_build do
    owner_type: "user", # Default is user - set to organization for appcenter organizations
    app_name: "TodoList",
    release_notes: notes,
-    #file: "/Users/ratheesh/Desktop/Ratheesh/SwiftUI/TodoList/path/to/dir",
    notify_testers: true # Set to false if you don't want to notify testers of your new release (default: `false`)
   )
 end
