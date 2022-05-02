@@ -8,7 +8,7 @@ release_number = ''
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
+  desc "iOS Build Automation"
 
 lane :build do
 
