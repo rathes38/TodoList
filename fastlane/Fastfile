@@ -12,11 +12,11 @@ platform :ios do
 
 lane :build do
 
- #run_test_cases
+ run_test_cases
 
- #set_build_number
+ set_build_number
 
- #prepare_build
+ prepare_build
 
  get_changelog
 
@@ -26,8 +26,8 @@ end
 
 lane :run_test_cases do
   run_tests(project: "TodoList.xcodeproj",
-            devices: ["iPhone 13 Pro"],
-            scheme: "TodoListTests")
+    devices: ["iPhone 13 Pro"],
+    scheme: "TodoListTests")
 end
 
 lane :set_build_number do 
