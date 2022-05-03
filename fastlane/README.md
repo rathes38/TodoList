@@ -40,7 +40,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane ios build
 ```
 
-Description of what the lane does
+iOS - Build Automation
 
 ### ios run_test_cases
 

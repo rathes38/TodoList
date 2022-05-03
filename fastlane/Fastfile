@@ -4,6 +4,7 @@ commits_to_this_commit = ''
 commits_from_that_commit = ''
 notes = ''
 release_number = ''
+sender, recipients = 'yanoratheesh@gmail.com', 'yanoratheesh@gmail.com'
 
 default_platform(:ios)
 
@@ -11,6 +12,8 @@ platform :ios do
   desc "iOS - Build Automation"
 
 lane :build do
+
+notification(subtitle: "Finished Building", message: "Ready to upload...")
 
  run_test_cases
 
@@ -21,13 +24,21 @@ lane :build do
  get_changelog
 
  #upload_build
-  
+
 end
 
-lane :run_test_cases do
+lane :run_test_cases do |lane|
+
+  error do |lane, exception|
+    message = 'Unit Test Failed'
+    subject = 'Unit Test Result'
+    send_unit_test_failure_email(msg:message, sub: subject)
+  end
+
   run_tests(project: "TodoList.xcodeproj",
     devices: ["iPhone 13 Pro"],
     scheme: "TodoListTests")
+
 end
 
 lane :set_build_number do 
@@ -104,5 +115,19 @@ lane :upload_build do
    app_name: "TodoList",
    release_notes: notes,
    notify_testers: true # Set to false if you don't want to notify testers of your new release (default: `false`)
+  )
+end
+
+private_lane :send_unit_test_failure_email do |params|
+  mailgun(
+    to: recipients,
+    reply_to: sender,
+    success: false,
+    from: 'Ratheesh',
+    subject: params[:sub],
+    message: params[:msg],
+    postmaster:'postmaster@sandbox8b140aa9d4c843ef96088dc758a274df.mailgun.org',
+    app_link:'www.google.com',
+    apikey:'920aa936b4dd3e535f24d673ac936ea4-fe066263-e6a33501'
   )
 end
