@@ -23,7 +23,7 @@ notification(subtitle: "Finished Building", message: "Ready to upload...")
 
  get_changelog
 
- #upload_build
+ upload_build
 
 end
 
